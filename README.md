@@ -1,227 +1,166 @@
-📊 Customer RFM Analysis using SQL & Python
-🚀 Project Overview
+📊 Customer RFM Analysis with SQL & Python
+🚀 Overview
 
-This project implements an end-to-end Customer RFM (Recency, Frequency, Monetary) Analysis using:
+This project performs an end-to-end **Customer RFM (Recency, Frequency, Monetary) Analysis** using Python and SQL.
 
-Python for data processing & visualization
+The goal is to move from raw transactional data to actionable customer segments by:
 
-SQLite as a relational database
+• Loading CSV data into a relational database
 
-SQL (with CTEs) for metric calculation
+• Writing optimized SQL queries using CTEs
 
-Statistical segmentation techniques
+• Calculating RFM metrics
 
-The goal is to identify high-value customers, segment them based on purchasing behavior, and analyze revenue contribution across segments.
+• Scoring customers using quartile ranking
 
-🎯 Objective
+• Segmenting customers into business categories
 
-To transform raw transactional data into actionable customer segments by:
+• Visualizing behavioral patterns and revenue concentration
 
-Loading structured CSV data into a relational database
+This project demonstrates database handling, SQL aggregation, and analytical storytelling.
 
-Computing RFM metrics using optimized SQL queries
+🏗️ **Project Architecture**
+CSV Files → SQLite Database → SQL (CTEs) → RFM Metrics → Scoring → Segmentation → Visualization
 
-Scoring customers using quartile-based ranking
+📂 **Dataset**
 
-Segmenting customers into business-friendly categories
+The project uses three structured tables:
 
-Visualizing behavioral patterns
+• orders
 
-🏗️ Project Workflow
-1️⃣ Database Setup
+• order_items
 
-Created SQLite database
+• customers
 
-Established SQLAlchemy engine connection
+Total customers analyzed: **2,172**
 
-Structured relational tables:
+🧮 Step 1: ** Database Setup**
 
-orders
+• Created SQLite database using SQLAlchemy
 
-order_items
+• Loaded CSV files into relational tables
 
-customers
+• Converted date columns to proper datetime format
 
-2️⃣ Data Loading
+• Ensured referential joins between orders and order_items
 
-Imported CSV files into pandas
+This ensures computations happen efficiently inside the database.
 
-Converted date columns to datetime format
+🧠 **Step 2: RFM Calculation (Using SQL CTEs)**
 
-Loaded tables into SQLite database
+Customer metrics were calculated directly inside SQL using:
 
-Verified row counts and schema consistency
+• Order joins
 
-3️⃣ RFM Table Creation (SQL with CTEs)
+• Aggregations
 
-Used SQL Common Table Expressions (CTEs) to:
+• Grouping
 
-Join orders and order_items
+• CTE structure for readability and performance
 
-Calculate total sales per order
+Metrics computed:
 
-Aggregate customer-level metrics:
+• Recency → Days since last purchase
 
-Last purchase date
+• Frequency → Total distinct orders
 
-Order frequency
+• Monetary → Total revenue generated
 
-Total revenue (Monetary)
+**📊 RFM Statistics Summary**
+| Metric    | Min | Max     | Mean   |
+| --------- | --- | ------- | ------ |
+| Recency   | 1   | 600     | 207    |
+| Frequency | 1   | 9       | 2.3    |
+| Monetary  | $12 | $10,533 | $2,289 |
 
-This ensures computation happens efficiently inside the database layer.
 
-4️⃣ RFM Metric Calculation
+**🔢 Step 3: RFM Scoring**
 
-From SQL output:
+Each metric was scored using quartiles (1–4 scale):
 
-Recency → Days since last purchase
+• Lower Recency → Higher Score
 
-Frequency → Number of distinct orders
+• Higher Frequency → Higher Score
 
-Monetary → Total customer spending
-
-Dataset size:
-
-2,172 customers analyzed
-
-📈 RFM Statistics Summary
-Metric	Min	Max	Mean
-Recency	1 day	600 days	207 days
-Frequency	1 order	9 orders	2.3 orders
-Monetary	$12	$10,533	$2,289
-
-Key observation:
-
-Majority customers purchased only 1–3 times
-
-Small group contributes disproportionately high revenue
-
-🔢 RFM Scoring Methodology
-
-Each metric scored on a quartile-based 1–4 scale:
-
-Recency → Lower is better
-
-Frequency → Higher is better
-
-Monetary → Higher is better
+• Higher Monetary → Higher Score
 
 Final RFM Score Range:
-3 (Lowest) → 12 (Highest)
+**3 → 12**
 
-Segment identifier example:
-R=4, F=4, M=4 → 444
+**🏷️ Step 4: Customer Segmentation**
 
-🏷️ Customer Segmentation
+Customers were grouped into meaningful business segments:
 
-Customers were grouped into business categories:
+• 🏆 Champions
 
-🏆 Champions
+• 🤝 Loyal Customers
 
-🤝 Loyal Customers
+• 🌱 Potential Loyalists
 
-🌱 Potential Loyalists
+• ⚠️ Need Attention
 
-⚠️ Need Attention
+• ❌ Lost
 
-❌ Lost
+**📈 Segment Distribution
+Customer Distribution by Segment**
+<img width="1188" height="583" alt="image" src="https://github.com/user-attachments/assets/e3f0edeb-36f0-4cf6-9154-ffbf325ff552" />
 
-📊 Segment Insights
-| Segment             | Customers | Revenue Contribution |
-| ------------------- | --------- | -------------------- |
-| Champions           | 833       | 61.3%                |
-| Loyal Customers     | 527       | 21.2%                |
-| Potential Loyalists | 455       | 11.9%                |
-| Need Attention      | 229       | 3.7%                 |
-| Lost                | 128       | 1.6%                 |
+**Revenue Contribution by Segment**
+<img width="1162" height="587" alt="image" src="https://github.com/user-attachments/assets/f6772cb6-6855-4ba4-b905-c44768678f51" />
+
+**🔎 Key Insight**
+
+Champions represent a minority of customers but generate the majority of revenue.
+
+Revenue Contribution:
+| Segment         | Revenue % |
+| --------------- | --------- |
+| Champions       | 61%       |
+| Loyal Customers | 21%       |
+| Others Combined | 18%       |
 
 
-🔎 Insight:
+**📉 Behavioral Analysis
+Recency Distribution**
+<img width="1155" height="691" alt="image" src="https://github.com/user-attachments/assets/b873af2d-5047-4d9e-b504-3b27e950482f" />
+**Frequency Distribution**
+<img width="1155" height="686" alt="image" src="https://github.com/user-attachments/assets/9dc55bce-300b-474e-9b37-0fc9f824d3e1" />
+**Monetary Distribution**
+<img width="1162" height="698" alt="image" src="https://github.com/user-attachments/assets/5e0887a8-36a3-4ba6-a18b-a2ec2071576b" />
 
-Champions (≈38% of customers) generate over 61% of total revenue.
+**📊 Relationship Analysis**
+**Recency vs Monetary**
+<img width="1172" height="699" alt="image" src="https://github.com/user-attachments/assets/2e15c95f-5b20-4991-849c-4f42ab30a859" />
+**Frequency vs Monetary**
+<img width="1167" height="697" alt="image" src="https://github.com/user-attachments/assets/91b751ed-ae14-4bc3-a860-cb07bfcc977f" />
 
-This highlights strong customer concentration.
+**🏆 Top Customer Analysis**
+• Identified Top 20 customers by RFM score
 
-📉 Behavioral Distribution Analysis
+• Identified Top 10 customers by total revenue
 
-Additional analysis included:
+• Measured revenue concentration percentage
 
-Recency distribution histogram
+Top 10 customers contribute ~2% of total revenue.
 
-Frequency distribution histogram
+**🛠️ Tech Stack**
 
-Monetary distribution histogram
+• Python
 
-Segment-wise revenue breakdown
+• Pandas
 
-Scatter plots:
+• NumPy
 
-Recency vs Monetary
+• Matplotlib
 
-Frequency vs Monetary
+• Seaborn
 
-Recency vs Frequency
+• SQL (CTEs, Aggregations)
 
-Top 20 customers by RFM score
+• SQLite
 
-Top 10 customers by revenue
+• SQLAlchemy
 
-🛠️ Tech Stack
 
-Python
 
-Pandas
 
-NumPy
-
-Matplotlib
-
-Seaborn
-
-SQL (CTEs, Aggregations)
-
-SQLite
-
-SQLAlchemy
-
-📁 Repository Structure
-├── data/
-│   ├── orders.csv
-│   ├── order_items.csv
-│   └── customers.csv
-│
-├── notebooks/
-│   └── rfm_analysis.ipynb
-│
-├── database/
-│   └── sales_analysis.db
-│
-└── README.md
-
-💡 Key Skills Demonstrated
-
-Relational database modeling
-
-SQL aggregation using CTEs
-
-Customer behavioral analytics
-
-Statistical segmentation (quartile scoring)
-
-Revenue concentration analysis
-
-Data visualization
-
-End-to-end analytical workflow
-
-🔮 Potential Improvements
-
-Automate RFM refresh process
-
-Convert to scheduled pipeline
-
-Deploy to cloud database
-
-Build interactive dashboard (Power BI / Tableau)
-
-Implement K-Means clustering for advanced segmentation
